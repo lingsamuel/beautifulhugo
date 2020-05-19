@@ -1,21 +1,28 @@
 <span class="post-meta">
-  {{ $lastmodstr := default (i18n "dateFormat") .Site.Params.dateformat | .Lastmod.Format }}
-  {{ $datestr := default (i18n "dateFormat") .Site.Params.dateformat | .Date.Format }}
-  <i class="fas fa-calendar"></i>&nbsp;{{ $datestr | i18n "postedOnDate"}}
-  {{ if ne $datestr $lastmodstr }}
-    &nbsp;{{ $lastmodstr | i18n "lastModified"  }}
+  {{ if .Params.Date }}
+    {{ $lastmodstr := default (i18n "dateFormat") .Site.Params.dateformat | .Lastmod.Format }}
+    {{ $datestr := default (i18n "dateFormat") .Site.Params.dateformat | .Date.Format }}
+    <i class="fas fa-calendar"></i>&nbsp;{{ $datestr | i18n "postedOnDate"}}
+    {{ if ne $datestr $lastmodstr }}
+      &nbsp;{{ $lastmodstr | i18n "lastModified"  }}
+    {{ end }}
   {{ end }}
+
   {{ if .Site.Params.readingTime }}
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;{{ i18n "readingTime"}}{{ .ReadingTime }}&nbsp;{{ i18n "readTime" }}
+  <i class="fas fa-clock"></i>&nbsp;{{ i18n "readingTime"}}{{ .ReadingTime }}&nbsp;{{ i18n "readTime" }}&nbsp;|&nbsp;
   {{ end }}
+
   {{ if .Site.Params.wordCount }}
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;{{ .WordCount }}&nbsp;{{ i18n "words" }}
+    <i class="fas fa-book"></i>&nbsp;{{ .WordCount }}&nbsp;{{ i18n "words" }}&nbsp;|&nbsp;
   {{ end }}
-  {{ if .Params.author }}
-    &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;{{ .Params.author | safeHTML }}
+
+  {{ if and .Params.author .Site.Params.showAuthor }}
+    <i class="fas fa-user"></i>&nbsp;{{ .Params.author | safeHTML }}
   {{ else }}
     &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;{{ .Site.Author.name | safeHTML }}
   {{ end }}
+
+
   {{- if .Site.Params.staticman -}}
     &nbsp;|&nbsp;<i class="fas fa-comment"></i>&nbsp;
     {{ $slug := replace .URL "/" "" }}
@@ -32,6 +39,7 @@
       {{ end }}
     {{ end }}
   {{ end }}
+
   {{ if .IsTranslated -}}
     {{- $sortedTranslations := sort .Translations "Site.Language.Weight" -}}
     {{- $links := apply $sortedTranslations "partial" "translation_link.html" "." -}}
@@ -41,3 +49,10 @@
   {{- end }}
 </span>
 
+{{ if .Params.categories }}
+<div class="blog-categories">
+    {{ range .Params.categories }}
+    <a href="{{ $.Site.LanguagePrefix | absURL }}/categories/{{ . | urlize }}/">{{ . }}</a>&nbsp;
+    {{ end }}
+</div>
+{{ end }}

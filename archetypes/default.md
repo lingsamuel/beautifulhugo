@@ -1,9 +1,11 @@
 ---
 title: "{{ replace .Name "-" " " | title }}"
-author: ""
+author: "{{ .Site.Author.name }}"
 type: ""
 date: {{ .Date }}
 subtitle: ""
 image: ""
+categories: []
 tags: []
+hide: false
 ---

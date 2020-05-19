@@ -9,6 +9,7 @@
         {{ end }}
         <div class="posts-list">
           {{ range .Paginator.Pages }}
+          {{ if not .Params.hide }}
             <article class="post-preview">
               <a href="{{ .Permalink }}">
                 <h2 class="post-title">{{ .Title }}</h2>
@@ -42,20 +43,58 @@
 
             </article>
           {{ end }}
+          {{ end }}
         </div>
-        {{ if or (.Paginator.HasPrev) (.Paginator.HasNext) }}
-          <ul class="pager main-pager">
-            {{ if .Paginator.HasPrev }}
-              <li class="previous">
-                <a href="{{ .URL }}page/{{ .Paginator.Prev.PageNumber }}/">&larr; {{ i18n "newerPosts" }}</a>
+
+        {{ if gt .Paginator.TotalPages 1}}
+
+        <ul class="pager main-pager">
+          {{ if .Paginator.HasPrev }}
+            <li class="previous">
+              <a href="{{ .URL }}page/{{ .Paginator.Prev.PageNumber }}/">&larr; {{ i18n "newerPosts" }}</a>
+            </li>
+          {{ end }}
+
+          {{ $pag := $.Paginator }}
+          {{ range $pag.Pagers }}
+            {{ $right := sub .TotalPages .PageNumber }}
+            {{ $showNumber := or (le .PageNumber 3) (eq $right 0) }}
+            {{ $showNumber := or $showNumber (and (gt .PageNumber (sub $pag.PageNumber 2)) (lt .PageNumber (add $pag.PageNumber 2)))  }}
+
+            {{ if $showNumber }}
+              {{ $.Scratch.Set "__paginator.ellipsed" false }}
+              {{ $.Scratch.Set "__paginator.shouldEllipse" false }}
+            {{ else }}
+              {{ $.Scratch.Set "__paginator.shouldEllipse" (not ($.Scratch.Get "__paginator.ellipsed") ) }}
+              {{ $.Scratch.Set "__paginator.ellipsed" true }}
+            {{ end }}
+
+            {{ if $showNumber }}
+              {{ if eq . $pag }}
+              <li class="paginator">
+                <a href="{{ .URL }}">{{ .PageNumber }}</a>
+              </li>
+              {{ else }}
+              <li class="paginator">
+                <a href="{{ .URL }}">{{ .PageNumber }}</a>
+              </li>
+              {{ end }}
+            {{ else if ($.Scratch.Get "__paginator.shouldEllipse") }}
+              <li class="paginator disabled">
+                <a> ... </a>
               </li>
             {{ end }}
-            {{ if .Paginator.HasNext }}
-              <li class="next">
-                <a href="{{ .URL }}page/{{ .Paginator.Next.PageNumber }}/">{{ i18n "olderPosts" }} &rarr;</a>
-              </li>
-            {{ end }}
-          </ul>
+          {{ end }}
+
+
+
+          {{ if .Paginator.HasNext }}
+            <li class="next">
+              <a href="{{ .URL }}page/{{ .Paginator.Next.PageNumber }}/">{{ i18n "olderPosts" }} &rarr;</a>
+            </li>
+          {{ end }}
+        </ul>
+
         {{ end }}
       </div>
     </div>
