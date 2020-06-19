@@ -65,10 +65,10 @@
               {{ else }}
                 <h1>{{ with $title }}{{.}}{{ else }}<br/>{{ end }}</h1>
               {{ end }}
-              {{ if ne .Type "post" }}
-                <hr class="small">
-              {{ end }}
               {{ if $subtitle }}
+                {{ if ne .Type "post" }}
+                  <hr class="small">
+                {{ end }}
                 {{ if eq .Type "page" }}
                   <span class="{{ .Type }}-subheading">{{ $subtitle }}</span>
                 {{ else }}

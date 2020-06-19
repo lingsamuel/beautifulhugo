@@ -11,7 +11,10 @@
           {{ range .Paginator.Pages }}
           {{ if not .Params.hide }}
             <article class="post-preview">
+              {{ $showLink := not (in .Site.Params.hideLinkType .Type) }}
+              {{ if $showLink }}
               <a href="{{ .Permalink }}">
+              {{ end }}
                 <h2 class="post-title">{{ .Title }}</h2>
 
                 {{ if .Params.subtitle }}
@@ -19,7 +22,9 @@
                     {{ .Params.subtitle }}
                   </h3>
                 {{ end }}
+              {{ if $showLink }}
               </a>
+              {{ end }}
 
               <p class="post-meta">
                 {{ partial "post_meta.html" . }}
