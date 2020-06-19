@@ -6,6 +6,7 @@
     {{ if ne $datestr $lastmodstr }}
       &nbsp;{{ $lastmodstr | i18n "lastModified"  }}
     {{ end }}
+    &nbsp;|&nbsp;
   {{ end }}
 
   {{ if .Site.Params.readingTime }}
@@ -19,7 +20,7 @@
   {{ if and .Params.author .Site.Params.showAuthor }}
     <i class="fas fa-user"></i>&nbsp;{{ .Params.author | safeHTML }}
   {{ else }}
-    &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;{{ .Site.Author.name | safeHTML }}
+    <i class="fas fa-user"></i>&nbsp;{{ .Site.Author.name | safeHTML }}
   {{ end }}
 
 
