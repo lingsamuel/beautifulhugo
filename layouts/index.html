@@ -26,7 +26,15 @@
 
               {{ partial "post_meta.html" . }}
               <div class="post-entry">
-                {{ if .Truncated }}
+                {{ $needTruncate := .Truncated }}
+                {{ if .Params.Summary }}
+                  {{ $needTruncate = .Params.Summary }}
+                {{ else }}
+                  {{ if (in .Site.Params.disableTruncate .Type) }}
+                   {{ $needTruncate = (in .Site.Params.disableTruncate .Type) }}
+                  {{ end }}
+                {{ end }}
+                {{ if $needTruncate }}
                   {{ if .Params.summary }}{{ .Params.summary }}{{ else }}{{ .Summary }}{{ end }}
                   <a href="{{ .Permalink }}" class="post-read-more">[{{ i18n "readMore" }}]</a>
                 {{ else }}

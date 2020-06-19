@@ -30,7 +30,15 @@
                 {{ partial "post_meta.html" . }}
               </p>
               <div class="post-entry">
-                {{ if .Truncated }}
+                {{ $needTruncate := .Truncated }}
+                {{ if .Params.Sum }}
+                  {{ $needTruncate = .Params.Sum }}
+                {{ else }}
+                  {{ if (in .Site.Params.disableTruncate .Type) }}
+                   {{ $needTruncate = false }}
+                  {{ end }}
+                {{ end }}
+                {{ if $needTruncate }}
                   {{ .Summary }}
                   <a href="{{ .Permalink }}" class="post-read-more">[{{ i18n "readMore" }}]</a>
                 {{ else }}
