@@ -1,13 +1,14 @@
 <span class="post-meta">
   {{ $hideMeta := (in .Site.Params.hideMetaType .Type) }}
+  {{ $showModify := (in .Site.Params.showLastModifyType .Type) }}
 
   {{ if .Params.Date }}
     {{ $lastmodstr := default (i18n "dateFormat") .Site.Params.dateformat | .Lastmod.Format }}
     {{ $datestr := default (i18n "dateFormat") .Site.Params.dateformat | .Date.Format }}
     <i class="fas fa-calendar"></i>&nbsp;{{ $datestr | i18n "postedOnDate"}}
-    <!-- {{ if ne $datestr $lastmodstr }}
+    {{ if and (ne $datestr $lastmodstr) $showModify }}
       &nbsp;{{ $lastmodstr | i18n "lastModified"  }}
-    {{ end }} -->
+    {{ end }}
   {{ end }}
 
   {{ if and .Site.Params.readingTime (not $hideMeta) }}
