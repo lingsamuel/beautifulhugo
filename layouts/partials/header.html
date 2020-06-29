@@ -60,6 +60,11 @@
         <div class="row">
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <div class="{{ .Type }}-heading">
+              {{ if eq .Type "categories" }}
+                {{ if (isset .Site.Params.categoryAlias $title) }}
+                  {{ $title = index .Site.Params.categoryAlias $title }}
+                {{end}}
+              {{ end }}
               {{ if eq .Type "list" }}
                 <h1>{{ if .Data.Singular }}#{{ end }}{{ .Title }}</h1>
               {{ else }}
