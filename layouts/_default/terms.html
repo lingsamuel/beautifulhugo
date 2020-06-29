@@ -23,7 +23,11 @@
             </a>
             <div id="collapse{{ $value.Name }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading{{ $value.Name }}">
               <div class="panel-body">
-                <a href="{{ $.Site.LanguagePrefix | absURL }}/{{ $data.Plural }}/{{ $value.Name | urlize }}/" class="list-group-item view-all">
+                {{ $url_prefix := $.Site.LanguagePrefix | absURL }}
+                {{ if not (eq $.Site.LanguagePrefix "") }}
+                  {{ $url_prefix = print $url_prefix "/" }}
+                {{ end }}
+                <a href="{{ $url_prefix }}{{ $data.Plural }}/{{ $value.Name | urlize }}/" class="list-group-item view-all">
                 View all</a>
                 <div class="list-group">
                   {{ range $item := $value.WeightedPages }}

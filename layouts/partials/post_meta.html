@@ -51,9 +51,13 @@
 </span>
 
 {{ if .Params.categories }}
+{{ $url_prefix := $.Site.LanguagePrefix | absURL }}
+{{ if not (eq $.Site.LanguagePrefix "") }}
+  {{ $url_prefix = print $url_prefix "/" }}
+{{ end }}
 <div class="blog-categories">
     {{ range .Params.categories }}
-    <a href="{{ $.Site.LanguagePrefix | absURL }}/categories/{{ . | urlize }}/">{{ . }}</a>&nbsp;
+    <a href="{{ $url_prefix }}categories/{{ . | urlize }}/">{{ . }}</a>&nbsp;
     {{ end }}
 </div>
 {{ end }}
