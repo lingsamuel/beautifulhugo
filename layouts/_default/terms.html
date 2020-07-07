@@ -31,7 +31,15 @@
                 View all</a>
                 <div class="list-group">
                   {{ range $item := $value.WeightedPages }}
-                    <a href="{{$item.Permalink}}" class="list-group-item">{{ $item.Title }}</a>
+                    {{ if eq $item.Title "" }}
+                      {{ $fileName := path.Base $item.Page.Path }}
+                      {{ $fileNameLen := len $fileName }}
+                      {{ $extLen := len (path.Ext $fileName) }}
+                      {{ $fileName = substr $fileName 0 (sub 0 $extLen) }}
+                      <a href="{{$item.Permalink}}" class="list-group-item">{{ printf "%s: %s" (humanize $item.Page.Section) ($fileName) }}</a>
+                    {{ else }}
+                      <a href="{{$item.Permalink}}" class="list-group-item">{{ $item.Title }}</a>
+                    {{ end }}
                   {{ end }}
                 </div>
               </div>
