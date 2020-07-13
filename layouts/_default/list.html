@@ -11,7 +11,7 @@
           {{ range .Paginator.Pages }}
           {{ if not .Params.hide }}
             <article class="post-preview">
-              {{ $showLink := not (in .Site.Params.hideLinkType .Type) }}
+              {{ $showLink := and (not (in .Site.Params.hideLinkType .Type)) (not .Params.hideLink) }}
               {{ if $showLink }}
               <a href="{{ .Permalink }}">
               {{ end }}
