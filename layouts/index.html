@@ -8,11 +8,18 @@
           </div>
         {{ end }}
 
+        {{/* range .Data.Pages }}
+            {{ .Title }}-{{ .Type }}-{{ .Page }} | 
+        {{ end */}}
+
         <div class="posts-list">
           {{ $pag := .Paginate (where .Data.Pages "Type" "post") }}
+          {{/* $pag := .Paginate (.Data.Pages) */}}
           {{ range $pag.Pages }}
             <article class="post-preview">
+              {{ if not .Params.hideLink }}
               <a href="{{ .Permalink }}">
+              {{ end }}
                 <h2 class="post-title">{{ .Title }}</h2>
                 {{ if .Params.subtitle }}
                   <h3 class="post-subtitle">
@@ -31,7 +38,7 @@
                   {{ $needTruncate = .Params.Summary }}
                 {{ else }}
                   {{ if (in .Site.Params.disableTruncate .Type) }}
-                   {{ $needTruncate = (in .Site.Params.disableTruncate .Type) }}
+                   {{ $needTruncate = false }}
                   {{ end }}
                 {{ end }}
                 {{ if $needTruncate }}

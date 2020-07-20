@@ -18,7 +18,9 @@
           {{ if .Site.Params.rss }}
           <li>
             {{ if .RSSLink }}
-            <a href="{{ .RSSLink }}" title="RSS">
+            {{ with .OutputFormats.Get "RSS" }}
+              <a href="{{ .RelPermalink }}" title="RSS">
+            {{ end }}
             {{ else }}
             <a href="{{ .Site.RSSLink }}" title="RSS">
             {{ end }}
