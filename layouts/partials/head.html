@@ -28,7 +28,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <!-- Site Title, Description, Author, and Favicon -->
 {{- with ($.Scratch.Get "Title") }}
-  <title>{{ . }} - {{ $.Site.Title }}</title>
+  {{ $pageTitle := . }}
+  {{ if (isset $.Site.Params.alias $pageTitle ) }}
+    {{ $pageTitle = index $.Site.Params.alias $pageTitle }}
+  {{end}}
+  <title>{{ $pageTitle }} - {{ $.Site.Title }}</title>
   <meta property="og:title" content="{{ . }}" />
   <meta name="twitter:title" content="{{ . | truncate 70 }}" />
 {{- end }}

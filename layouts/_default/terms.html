@@ -13,8 +13,8 @@
             <a class="collapsed" role="button" data-toggle="collapse" data-target="#collapse{{ $value.Name }}" data-parent="#accordion" aria-expanded="false" aria-controls="collapse{{ $value.Name }}">
                 <div class="panel-heading" role="tab" id="header{{ $value.Name }}">
                   <h4 class="panel-title">
-                      {{ if (isset $site.Params.categoryAlias $value.Name) }}
-                        {{ index $site.Params.categoryAlias $value.Name }}
+                      {{ if (isset $site.Params.alias $value.Name) }}
+                        {{ index $site.Params.alias $value.Name }}
                       {{ else }}
                         {{ $value.Name }}
                       {{end}}

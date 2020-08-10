@@ -63,8 +63,8 @@
           <div class="col-lg-10 col-lg-offset-1">
             <div class="{{ .Type }}-heading">
               {{ if eq .Type "categories" }}
-                {{ if (isset .Site.Params.categoryAlias $title) }}
-                  {{ $title = index .Site.Params.categoryAlias $title }}
+                {{ if (isset .Site.Params.alias $title) }}
+                  {{ $title = index .Site.Params.alias $title }}
                 {{end}}
               {{ end }}
               {{ if eq .Type "list" }}
