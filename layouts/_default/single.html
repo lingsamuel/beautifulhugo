@@ -1,8 +1,13 @@
 {{ define "main" }}
 <div class="container" role="main">
   <div class="row">
+    {{ $hasTOC := gt (len .TableOfContents) 32 }}
     <!-- <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"> -->
+    {{ if $hasTOC }}
+    <div class="col-lg-8 col-lg-offset-1">
+    {{ else }}
     <div class="col-lg-10 col-lg-offset-1">
+    {{ end }}
       <article role="main" class="blog-post">
         {{ .Content }}
 
@@ -80,6 +85,14 @@
       {{ end }}
 
     </div>
+
+    {{ if $hasTOC }}
+    <!-- <div id="toc" class="col-lg-2"> -->
+      <aside id="toc" class="col-lg-2 col-lg-offset-1 ">
+        {{ .TableOfContents }}
+      </aside>
+    <!-- </div> -->
+    {{ end }}    
   </div>
 </div>
 {{ end }}
