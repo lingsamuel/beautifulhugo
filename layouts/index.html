@@ -42,19 +42,24 @@
                    {{ $needTruncate = false }}
                   {{ end }}
                 {{ end }}
-                {{ if $needTruncate }}
-                  {{ if .Params.summary }}{{ .Params.summary }}{{ else }}{{ .Summary }}{{ end }}
-                  <a href="{{ .Permalink }}" class="post-read-more">[{{ i18n "readMore" }}]</a>
-                {{ else }}
+                {{ if not $needTruncate }}
                   {{ .Content }}
                 {{ end }}
               </div>
 
-              {{ if .Params.tags }}
-                <div class="blog-tags">
-                  {{ range .Params.tags }}
-                    <a href="{{ $.Site.LanguagePrefix | absURL }}/tags/{{ . | urlize }}/">{{ . }}</a>&nbsp;
-                  {{ end }}
+              {{ if or .Params.tags $needTruncate }}
+                <div class="post-entry post-foot-meta-box partial-index">
+                {{ if .Params.tags }}
+                  <div class="blog-tags">
+                    {{ range .Params.tags }}
+                      <a href="{{ $.Site.LanguagePrefix | absURL }}/tags/{{ . | urlize }}/">{{ . }}</a>&nbsp;
+                    {{ end }}
+                  </div>
+                {{ end }}
+
+                {{ if $needTruncate }}
+                  <a href="{{ .Permalink }}" class="post-read-more">[{{ i18n "readMore" }}]</a>
+                {{ end }}
                 </div>
               {{ end }}
             </article>
