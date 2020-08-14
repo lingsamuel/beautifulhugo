@@ -1140,6 +1140,11 @@ ul.share li:hover .fab {
   user-select: none;
 }
 
+.chroma .lntable {
+  /* Make table mode code block full width */
+  width: 100%;
+}
+
 /* Highlight JS CSS doesn't has this */
 .chroma .hl {
   display: block;
