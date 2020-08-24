@@ -21,7 +21,9 @@
               {{ if not .Params.hideLink }}
               <a href="{{ .Permalink }}">
               {{ end }}
-                <h2 class="post-title">{{ .Title }}</h2>
+                {{ if .Title }}
+                  <h2 class="post-title">{{ .Title }}</h2>
+                {{ end }}
                 {{ if .Params.subtitle }}
                   <h3 class="post-subtitle">
                   {{ .Params.subtitle }}

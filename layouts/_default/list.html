@@ -16,7 +16,9 @@
               {{ if $showLink }}
               <a href="{{ .Permalink }}">
               {{ end }}
-                <h2 class="post-title">{{ .Title }}</h2>
+                {{ if .Title }}
+                  <h2 class="post-title">{{ .Title }}</h2>
+                {{ end }}
 
                 {{ if .Params.subtitle }}
                   <h3 class="post-subtitle">
@@ -27,9 +29,9 @@
               </a>
               {{ end }}
 
-              <p class="post-meta">
+              <!-- <p class="post-meta"> -->
                 {{ partial "post_meta.html" . }}
-              </p>
+              <!-- </p> -->
               <div class="post-entry">
                 {{ $needTruncate := .Truncated }}
                 {{ if .Params.Sum }}

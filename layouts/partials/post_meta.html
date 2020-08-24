@@ -1,5 +1,7 @@
+
+{{ $hideMeta := .Params.hideMeta }}
+{{ if (not $hideMeta) }}
 <span class="post-meta">
-  {{ $hideMeta := (in .Site.Params.hideMetaType .Type) }}
   {{ $showModify := (in .Site.Params.showLastModifyType .Type) }}
 
   {{ if .Params.Date }}
@@ -12,19 +14,20 @@
     {{ end }}
   {{ end }}
 
-  {{ if and .Site.Params.readingTime (not $hideMeta) }}
+  {{ if .Site.Params.readingTime }}
   {{/*  <i class="fas fa-clock"></i>&nbsp;  */}}
   {{ i18n "readingTime"}}{{ .ReadingTime }}&nbsp;{{ i18n "readTime" }}&nbsp;|&nbsp;
   {{ end }}
 
-  {{ if and .Site.Params.wordCount (not $hideMeta) }}
+  {{ if .Site.Params.wordCount }}
     {{/*  <i class="fas fa-book"></i>&nbsp;  */}}
     {{ .WordCount }}&nbsp;{{ i18n "words" }}&nbsp;|&nbsp;
   {{ end }}
 
-  {{ if and (and .Site.Author.name .Site.Params.showAuthor) (not $hideMeta) }}
+  {{ $hideAuthor := not (in .Site.Params.hideAuthorType .Type) }}
+  {{ if (and (and .Site.Author.name .Site.Params.showAuthor) $hideAuthor) }}
     {{/*  &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;  */}}
-    {{ .Site.Author.name | safeHTML }}
+    by {{ .Site.Author.name | safeHTML }}
   {{ end }}
 
 
@@ -53,6 +56,7 @@
     &nbsp;&bull;&nbsp;{{ i18n "translationsLabel" }}{{ $linksOutput }}
   {{- end }}
 </span>
+{{ end }}
 
 {{ if .Params.categories }}
 {{ $url_prefix := $.Site.LanguagePrefix | absURL }}
