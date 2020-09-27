@@ -9,8 +9,20 @@
           </div>
         {{ end }}
         <div class="posts-list">
-          {{ range .Paginator.Pages }}
-          {{ if not .Params.hide }}
+        {{ $kind := .Kind }}
+        {{ range .Paginator.Pages }}
+          {{ $isHide := false}}
+          {{ $hideCategory :=.Site.Params.hideCategory }}
+          {{ range .Params.categories }}
+            {{ if (in $hideCategory . ) }}
+             {{ $isHide = true }}
+            {{ end }} 
+          {{ end }}
+          {{ if not (eq $kind "section") }}
+            {{ $isHide = false }}
+          {{ end }}
+
+          {{ if and (not .Params.hide) (not $isHide) }}
             <article class="post-preview">
               {{ $showLink := and (not (in .Site.Params.hideLinkType .Type)) (not .Params.hideLink) }}
               {{ if $showLink }}

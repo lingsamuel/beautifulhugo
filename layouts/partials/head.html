@@ -27,6 +27,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <!-- Site Title, Description, Author, and Favicon -->
+<!-- View all category page -->
 {{- with ($.Scratch.Get "Title") }}
   {{ $pageTitle := . }}
   {{ if (isset $.Site.Params.alias $pageTitle ) }}
