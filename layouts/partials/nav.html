@@ -18,7 +18,18 @@
               <a class="navlinks-parent">{{ .Name }}</a>
               <div class="navlinks-children">
                 {{ range .Children }}
-                  <a href="{{ .URL | relLangURL }}">{{ .Name }}</a>
+                  {{ if .HasChildren }}
+                    <ul class="navlinks-container">
+                      <a href="{{ .URL | relLangURL }}" class="navlinks-parent">{{ .Name }}</a>
+                      <div class="navlinks-children">
+                      {{ range .Children.ByWeight }}
+                        <a href="{{ .URL | relLangURL }}">{{ .Name }}</a>
+                      {{ end }}
+                      </div>
+                    </ul>
+                  {{ else }}
+                    <a href="{{ .URL | relLangURL }}">{{ .Name }}</a>
+                  {{ end }}
                 {{ end }}
               </div>
             </li>
