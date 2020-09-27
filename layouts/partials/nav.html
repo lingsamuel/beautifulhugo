@@ -19,9 +19,9 @@
               <div class="navlinks-children">
                 {{ range .Children }}
                   {{ if .HasChildren }}
-                    <ul class="navlinks-container">
+                    <ul class="navlinks-container level-3-menu">
                       <a href="{{ .URL | relLangURL }}" class="navlinks-parent">{{ .Name }}</a>
-                      <div class="navlinks-children">
+                      <div class="navlinks-children right-menu">
                       {{ range .Children.ByWeight }}
                         <a href="{{ .URL | relLangURL }}">{{ .Name }}</a>
                       {{ end }}
