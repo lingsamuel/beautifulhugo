@@ -9,9 +9,9 @@
     {{ $datestr := default (i18n "dateFormat") .Site.Params.dateformat | .Date.Format }}
     {{/*  <i class="fas fa-calendar"></i>&nbsp;  */}}
     {{ $datestr | i18n "postedOnDate"}}
-    {{ if and (ne $datestr $lastmodstr) $showModify }}
+    <!-- {{ if and (ne $datestr $lastmodstr) $showModify }}
       &nbsp;{{ $lastmodstr | i18n "lastModified"  }}
-    {{ end }}
+    {{ end }} -->
   {{ end }}
 
   {{ if .Site.Params.readingTime }}
