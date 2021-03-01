@@ -74,7 +74,7 @@
                 <h1>{{ with $title }}{{.}}{{ else }}<br/>{{ end }}</h1>
               {{ end }}
 
-              {{ if ne .Type "post" }}
+              {{ if eq .Type "page" }}
               <hr class="small">
               {{ end }}
               {{ if $subtitle }}
