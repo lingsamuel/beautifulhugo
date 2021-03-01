@@ -2,6 +2,14 @@
 <html lang="{{ .Lang }}" itemscope itemtype="http://schema.org/WebPage">
   <head>
     {{ partial "head.html" . }}
+    
+  <!-- <script>
+    var hdWidth = document.getElementsByClassName('page-heading')[0].offsetWidth;
+    var textWidth = document.getElementsByClassName('hd-text')[0].offsetWidth;
+    var scale = hdWidth / textWidth;
+
+    document.getElementsByClassName('hd-text')[0].style.fontSize = scale * 100 + '%';
+  </script> -->
   </head>
   <body id="body">
     {{ partial "nav.html" . }}
