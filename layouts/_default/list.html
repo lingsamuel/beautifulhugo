@@ -3,6 +3,7 @@
     <div class="row">
       <!-- <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"> -->
       <div class="col-lg-10 col-lg-offset-1">
+        {{ $forceShowLink := (in .Site.Params.forceShowLinkType .Type) }}
         {{ with .Content }}
           <div class="well">
             {{.}}
@@ -24,7 +25,12 @@
 
           {{ if and (not .Params.hide) (not $isHide) }}
             <article class="post-preview">
-              {{ $showLink := and (not (in .Site.Params.hideLinkType .Type)) (not .Params.hideLink) }}
+
+              <!-- 显示链接 -->
+              <!-- 1. 参数里没有隐藏链接 -->
+              <!-- 2. 不在隐藏 type 里 -->
+              <!-- 3. 如果在强制显示里，永远显示 -->
+              {{ $showLink := (or $forceShowLink (and (not (in .Site.Params.hideLinkType .Type)) (not .Params.hideLink))) }}
               {{ if $showLink }}
               <a href="{{ .Permalink }}">
               {{ end }}
