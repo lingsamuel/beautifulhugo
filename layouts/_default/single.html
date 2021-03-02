@@ -14,13 +14,13 @@
 
         <div id="refContainer">
         </div>
-        {{ if .Params.tags }}
+        {{/* if .Params.tags }}
           <div class="blog-tags">
             {{ range .Params.tags }}
               <a href="{{ $.Site.LanguagePrefix | absURL }}/tags/{{ . | urlize }}/">{{ . }}</a>&nbsp;
             {{ end }}
           </div>
-        {{ end }}
+        {{ end */}}
 
         {{ if $.Param "socialShare" }}
             <hr/>
