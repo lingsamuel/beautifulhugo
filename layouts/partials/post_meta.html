@@ -62,7 +62,16 @@
 <div style="display: inline-flex; font-style:normal;">
   {{ range .Params.aliases }}
   <!-- <a href="{{ $.Site.LanguagePrefix | relURL }}{{ . | urlize }}/">Eternal Link</a>&nbsp; -->
-  <a style="text-align:right" href="{{ . | urlize }}/">Eternal Link</a>&nbsp;
+  <span></span>&nbsp;
+  <a style="text-align:right" href="{{ . | urlize }}/" onclick='
+  event.preventDefault();
+  return function f(elem){
+    navigator.clipboard.writeText(elem.href);
+
+    $(elem).prev().text("url copied");
+    setTimeout(function(){$(elem).prev().text("");}, 1000);
+  }(this)
+  '>Copy Eternal Link</a>
   {{ end }}
 </div>
 {{ end }}
