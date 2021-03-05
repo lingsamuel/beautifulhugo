@@ -13,6 +13,15 @@
 {{ $title := $.Scratch.Get "title" }}
 {{ $subtitle := $.Scratch.Get "subtitle" }}
 
+{{ define "tocRelatedDiveWidth" }}
+{{ $hasTOC := and (gt (len .TableOfContents) 32) (ne .Params.toc false) }}
+{{ if $hasTOC }}
+<div class="col-lg-10 col-lg-offset-1">
+{{ else }}
+<div class="col-lg-8 col-lg-offset-2">
+{{ end }}
+{{ end }}
+
 {{ if or $bigimg $title }}
   {{ if $bigimg }}
     <div id="header-big-imgs" data-num-img={{len $bigimg}}
@@ -33,7 +42,8 @@
         <div class="container">
           <div class="row">
             <!-- <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"> -->
-            <div class="col-lg-10 col-lg-offset-1">
+            <!-- <div class="col-lg-8 col-lg-offset-2"> -->
+              {{ block "tocRelatedDiveWidth" . }}{{ end }}
               <div class="{{ .Type }}-heading">
                 <h1>{{ with $.Scratch.Get "title" }}{{.}}{{ else }}<br/>{{ end }}</h1>
                   {{ if $subtitle }}
@@ -60,7 +70,7 @@
       <div class="container">
         <div class="row">
           <!-- <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"> -->
-          <div class="col-lg-10 col-lg-offset-1">
+            {{ block "tocRelatedDiveWidth" . }}{{ end }}
             <div class="{{ .Type }}-heading">
               {{ if eq .Type "categories" }}
                 {{ if (isset .Site.Params.alias $title) }}
@@ -99,7 +109,7 @@
       <div class="container">
         <div class="row">
           <!-- <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"> -->
-          <div class="col-lg-10 col-lg-offset-1">
+            {{ block "tocRelatedDiveWidth" . }}{{ end }}
             <div class="page-heading">
               {{/*  <h1> {{ .Type }}</h1>  */}}
               {{/*  <h1> {{ fileExists (printf "%s%s" .File.Dir "_index.md") }}</h1>  */}}
