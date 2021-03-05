@@ -11,7 +11,7 @@
         {{ end }}
         <div class="posts-list">
         {{ $kind := .Kind }}
-        {{ range .Paginator.Pages }}
+        {{ range (.Paginator 6).Pages }}
           {{ $isHide := false}}
           {{ $hideCategory :=.Site.Params.hideCategory }}
           {{ range .Params.categories }}
@@ -83,50 +83,96 @@
         {{ if gt .Paginator.TotalPages 1}}
 
         <ul class="pager main-pager">
-          {{ if .Paginator.HasPrev }}
-            <li class="previous">
-              <a href="{{ .URL }}page/{{ .Paginator.Prev.PageNumber }}/">&larr; {{ i18n "newerPosts" }}</a>
-            </li>
-          {{ end }}
-
-          {{ $pag := $.Paginator }}
-          {{ range $pag.Pagers }}
-            {{ $right := sub .TotalPages .PageNumber }}
-            {{ $showNumber := or (le .PageNumber 3) (eq $right 0) }}
-            {{ $showNumber := or $showNumber (and (gt .PageNumber (sub $pag.PageNumber 2)) (lt .PageNumber (add $pag.PageNumber 2)))  }}
-
-            {{ if $showNumber }}
-              {{ $.Scratch.Set "__paginator.ellipsed" false }}
-              {{ $.Scratch.Set "__paginator.shouldEllipse" false }}
-            {{ else }}
-              {{ $.Scratch.Set "__paginator.shouldEllipse" (not ($.Scratch.Get "__paginator.ellipsed") ) }}
-              {{ $.Scratch.Set "__paginator.ellipsed" true }}
+          <li class="previous">
+            {{ if .Paginator.HasPrev }}
+            <a href="{{ .URL }}page/{{ .Paginator.Prev.PageNumber }}/">&larr; {{ i18n "newerPosts" }}</a>
             {{ end }}
+          </li>
 
-            {{ if $showNumber }}
-              {{ if eq . $pag }}
-              <li class="paginator">
-                <a href="{{ .URL }}">{{ .PageNumber }}</a>
-              </li>
-              {{ else }}
-              <li class="paginator">
-                <a href="{{ .URL }}">{{ .PageNumber }}</a>
-              </li>
-              {{ end }}
-            {{ else if ($.Scratch.Get "__paginator.shouldEllipse") }}
-              <li class="paginator disabled">
-                <a> ... </a>
-              </li>
+          <li class="paginator">
+            <div>
+              <ul class="pager">
+                {{ $pag := $.Paginator }}
+                {{ range $pag.Pagers }}
+                  {{ $right := sub .TotalPages .PageNumber }}
+                  <!-- {{ sub .TotalPages .PageNumber }} -->
+
+                  <!-- 一共有 N=7 个格子 -->
+                  <!-- 至少显示当前页、首页、尾页 -->
+                  <!-- 可能显示前省略、后省略 -->
+                  <!-- 还有前一页，后一页 -->
+
+                  <!-- 1 2 3 4 5 ... 10 -->
+                  <!-- 1 ... 6 7 8 9 10 -->
+                  <!-- 1 ... 4 5 6 ... 10 -->
+                  <!-- 1 ... 5 6 7 ... 10 -->
+                  {{ $showNumber := false }}
+                  <!-- 显示首页尾页 -->
+                  {{ $showNumber := or $showNumber (or (eq .PageNumber 1) (eq $right 0)) }}
+                  <!-- 当前页 -->
+                  {{ $showNumber = or $showNumber (eq .PageNumber $pag.PageNumber) }}
+
+                  <!-- 至少需要等于 7：当前页、首尾页、左右页、两个省略号 -->
+                  {{ $paginatorCount := 7 }}
+
+
+                  <!-- 从 N 中减去首、尾、当前、两个省略号，除以二 -->
+                  {{ $leftCount := div (sub $paginatorCount 5) 2 }}
+                  {{ $rightCount := $leftCount }}
+                  {{ if (modBool $paginatorCount 2) }}
+                    {{ $rightCount = add $rightCount 1 }}
+                  {{ end }}
+                  {{ $rightCount := add $rightCount 1 }}
+                  <!-- 无论如何都要显示左右页 -->
+                  {{ $showNumber := or $showNumber (and (ge .PageNumber (sub $pag.PageNumber $leftCount)) (lt .PageNumber (add $pag.PageNumber $rightCount)))}}
+
+                  <!-- 特殊情况，只省略单边：Current <= COUNT-4 || TOTAL-(COUNT-4) <= Current -->
+                  <!-- 仅省略右边：减去尾页、省略、下一页== 3 页，小于 Count - 3 的都可以显示 -->
+                  <!-- 注意此处须排除最靠近省略号的页数（此处为 5），否则若当前页==最靠近省略号的页数，那么会额外展开一页（第六页） -->
+                  <!-- 1 2 3 4 5 ... 10 -->
+                  {{ $lesserThan := sub $paginatorCount 3 }}
+                  <!-- 仅省略左边：减去首页、省略、上一页== 3 页，大于 Total - (Count - 4) 的都可以显示 -->
+                  <!-- 因为起始id=1，额外减一 -->
+                  {{ $largerThan := sub .TotalPages (sub $paginatorCount 3) }}
+
+                  <!-- 由于上面排除了最靠近省略号的页数，此处需要加/减回来（） -->
+                  {{ $showNumber := or $showNumber (and (le .PageNumber (add $lesserThan 1)) (le $pag.PageNumber $lesserThan)) }}
+                  {{ $showNumber := or $showNumber (and (gt .PageNumber (sub $largerThan 1)) (gt $pag.PageNumber $largerThan)) }}
+                  
+                  {{ if $showNumber }}
+                    {{ $.Scratch.Set "__paginator.ellipsed" false }}
+                    {{ $.Scratch.Set "__paginator.shouldEllipse" false }}
+                  {{ else }}
+                    <!-- 避免重复渲染省略号 -->
+                    {{ $.Scratch.Set "__paginator.shouldEllipse" (not ($.Scratch.Get "__paginator.ellipsed") ) }}
+                    {{ $.Scratch.Set "__paginator.ellipsed" true }}
+                  {{ end }}
+      
+                  {{ if $showNumber }}
+                    {{ if eq . $pag }}
+                    <li class="paginator current">
+                      <a href="{{ .URL }}">{{ .PageNumber }}</a>
+                    </li>
+                    {{ else }}
+                    <li class="paginator">
+                      <a href="{{ .URL }}">{{ .PageNumber }}</a>
+                    </li>
+                    {{ end }}
+                  {{ else if ($.Scratch.Get "__paginator.shouldEllipse") }}
+                    <li class="paginator disabled">
+                      <a> ... </a>
+                    </li>
+                  {{ end }}
+                {{ end }}
+              </ul>
+            </div>
+          </li>
+
+          <li class="next">
+            {{ if .Paginator.HasNext }}
+            <a href="{{ .URL }}page/{{ .Paginator.Next.PageNumber }}/">{{ i18n "olderPosts" }} &rarr;</a>
             {{ end }}
-          {{ end }}
-
-
-
-          {{ if .Paginator.HasNext }}
-            <li class="next">
-              <a href="{{ .URL }}page/{{ .Paginator.Next.PageNumber }}/">{{ i18n "olderPosts" }} &rarr;</a>
-            </li>
-          {{ end }}
+          </li>
         </ul>
 
         {{ end }}
