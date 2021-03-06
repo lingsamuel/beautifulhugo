@@ -10,6 +10,7 @@
     {{ $datestr := default (i18n "dateFormat") .Site.Params.dateformat | .Date.Format }}
     {{/*  <i class="fas fa-calendar"></i>&nbsp;  */}}
     {{ $datestr | i18n "postedOnDate" }}
+    &nbsp;{{ $lastmodstr | i18n "lastModified"  }}
     {{ if and (ne $datestr $lastmodstr) $showModify }}
       &nbsp;{{ $lastmodstr | i18n "lastModified"  }}
     {{ end }}

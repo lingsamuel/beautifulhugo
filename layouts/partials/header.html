@@ -13,7 +13,7 @@
 {{ $title := $.Scratch.Get "title" }}
 {{ $subtitle := $.Scratch.Get "subtitle" }}
 
-{{ define "tocRelatedDiveWidth" }}
+{{ define "tocRelatedDivWidth" }}
 {{ $hasTOC := and (gt (len .TableOfContents) 32) (ne .Params.toc false) }}
 {{ if $hasTOC }}
 <div class="col-lg-11 col-lg-offset-1">
@@ -43,7 +43,7 @@
           <div class="row">
             <!-- <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"> -->
             <!-- <div class="col-lg-8 col-lg-offset-2"> -->
-              {{ block "tocRelatedDiveWidth" . }}{{ end }}
+              {{ block "tocRelatedDivWidth" . }}{{ end }}
               <div class="{{ .Type }}-heading">
                 <h1>{{ with $.Scratch.Get "title" }}{{.}}{{ else }}<br/>{{ end }}</h1>
                   {{ if $subtitle }}
@@ -57,7 +57,7 @@
                   {{/* if eq .Type "post" */}}
                     {{ partial "post_meta.html" . }}
                     {{ partial "tags.html" . }}
-                  {{/* end *?}}
+                  {{/* end */}}
               </div>
             </div>
           </div>
@@ -66,13 +66,16 @@
       </div>
     {{ end }}
 
-    {{ if (in .Site.Params.ValidPostType .Type) }}
+    {{ $cssPrefix := "page" }}
+    {{ if (in .Site.Params.CustomCssPostType .Type) }}
+      {{ $cssPrefix = .Type }}
+    {{ end }}
     <div id="intro-header" class="intro-header no-img">
       <div class="container">
         <div class="row">
           <!-- <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"> -->
-            {{ block "tocRelatedDiveWidth" . }}{{ end }}
-            <div class="{{ .Type }}-heading">
+            {{ block "tocRelatedDivWidth" . }}{{ end }}
+            <div class="{{ $cssPrefix }}-heading">
               {{ if eq .Type "categories" }}
                 {{ if (isset .Site.Params.alias $title) }}
                   {{ $title = index .Site.Params.alias $title }}
@@ -90,9 +93,9 @@
               {{ end }}
               {{ if $subtitle }}
                 {{ if eq .Type "page" }}
-                  <span class="{{ .Type }}-subheading">{{ $subtitle }}</span>
+                  <span class="{{ $cssPrefix }}-subheading">{{ $subtitle }}</span>
                 {{ else }}
-                  <h2 class="{{ .Type }}-subheading">{{ $subtitle }}</h2>
+                  <h2 class="{{ $cssPrefix }}-subheading">{{ $subtitle }}</h2>
                 {{ end }}
               {{ end }}
 
@@ -105,43 +108,6 @@
         </div>
       </div>
     </div>
-    {{ else }}
-    <div id="intro-header" class="intro-header no-img">
-      <div class="container">
-        <div class="row">
-          <!-- <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"> -->
-            {{ block "tocRelatedDiveWidth" . }}{{ end }}
-            <div class="page-heading">
-              {{/*  <h1> {{ .Type }}</h1>  */}}
-              {{/*  <h1> {{ fileExists (printf "%s%s" .File.Dir "_index.md") }}</h1>  */}}
-              {{ if eq .Type "list" }}
-              <h1>{{ if .Data.Singular }}#{{ end }}{{ .Title }}</h1>
-              {{ else }}
-              <h1>{{ with $title }}{{.}}{{ else }}<br/>{{ end }}</h1>
-              {{ end }}
-
-              {{ if ne .Type "post" }}
-              <hr class="small">
-              {{ end }}
-
-              {{ if $subtitle }}
-                {{ if eq .Type "page" }}
-                <span class="{{ .Type }}-subheading">{{ $subtitle }}</span>
-                {{ else }}
-                <h2 class="{{ .Type }}-subheading">{{ $subtitle }}</h2>
-                {{ end }}
-              {{ end }}
-
-              {{/* if eq .Type "post" */}}
-              {{ partial "post_meta.html" . }}
-              {{ partial "tags.html" . }}
-              {{/* end */}}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    {{ end }}
   </header>
 {{ else }}
   <div id="intro-header" class="intro-header"></div>
