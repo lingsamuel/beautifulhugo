@@ -88,7 +88,7 @@
                 <h1>{{ with $title }}{{.}}{{ else }}<br/>{{ end }}</h1>
               {{ end }}
 
-              {{ if eq .Type "page" }}
+              {{ if or (eq .Type "page") (and (not (in .Site.Params.CustomCssPostType .Type)) (ne .Type "post")) }}
               <hr class="small">
               {{ end }}
               {{ if $subtitle }}
