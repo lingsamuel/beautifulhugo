@@ -88,7 +88,12 @@
                 <h1>{{ with $title }}{{.}}{{ else }}<br/>{{ end }}</h1>
               {{ end }}
 
-              {{ if or (eq .Type "page") (and (not (in .Site.Params.CustomCssPostType .Type)) (ne .Type "post")) }}
+              {{ $needHr := false }}
+              {{ $needHr := or $needHr (eq .Type "page") }}
+              {{ $needHr := or $needHr (and (not (in .Site.Params.CustomCssPostType .Type)) (ne .Type "post")) }}
+              {{ $needHr := or $needHr $subtitle }}
+
+              {{ if $needHr }}
               <hr class="small">
               {{ end }}
               {{ if $subtitle }}
