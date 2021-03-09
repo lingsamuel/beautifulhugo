@@ -140,6 +140,7 @@
 
     document.querySelectorAll('.mermaid').forEach(function(el) {
       let html = el.textContent;
+      console.log("Rendering ",html)
       let id = 'graph-' + Math.floor(Math.random() * Math.floor(100000));
 
       mermaid.mermaidAPI.render(id, html, content => {
