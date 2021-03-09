@@ -66,14 +66,18 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+{{/*  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>  */}}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+{{/*  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>  */}}
+{{/*  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>  */}}
+
 <script src="{{ "js/main.js" | absURL }}"></script>
 {{- if .Site.Params.staticman }}
 <script src="{{ "js/staticman.js" | absURL }}"></script>
 {{- end }}
 <link href="{{"css/mermaid.css" | relURL}}" type="text/css" rel="stylesheet"/>
-<script  src="{{"js/mermaid.min.js" | relURL}}"></script>
+<script src="{{"js/mermaid.min.js" | relURL}}"></script>
 {{- if  .Site.Params.useHLJS }}
 <script src="{{ "js/highlight.min.js" | absURL }}"></script>
 <script> 
@@ -97,9 +101,12 @@
     const flowChart = `
 		linkStyle default fill:none,stroke:grey;
 		classDef default stroke:#97999a,color:#696874;
-		classDef Red fill:#f19b97,stroke:#97999a,color:#fcefee;
-		classDef Green fill:#79d8ce,stroke:#97999a,color:#fcfefd;
-    classDef Yellow fill:#fcd766,stroke:#97999a,color:#807971;`
+		classDef def stroke:#97999a,color:#696874;
+    classDef Blue stroke:#97999a,fill:#76aac2,color:#eff1f3;
+    classDef Grey stroke:#97999a,fill:#696773,color:#eef0f2;
+		classDef Red stroke:#97999a,fill:#f19b97,color:#fcefee;
+		classDef Green stroke:#97999a,fill:#79d8ce,color:#edf0f2;
+    classDef Yellow stroke:#97999a,fill:#fcd766,color:#807971;`
     if(text.startsWith("graph")) {
       return text + flowChart;
     }
@@ -125,6 +132,26 @@
     //console.log(graphDefinition)
     //var graph = mermaid.mermaidAPI.render('graphDiv', graphDefinition, insertSvg);
   });
+</script>
+<script>
+    // Don't render immediately
+    mermaid.initialize({startOnLoad:false});
+    mermaid.mermaidAPI.initialize();
+
+    document.querySelectorAll('.mermaid').forEach(function(el) {
+      let html = el.textContent;
+      let id = 'graph-' + Math.floor(Math.random() * Math.floor(100000));
+
+      mermaid.mermaidAPI.render(id, html, content => {
+          el.innerHTML = content;
+      });
+    });
+
+    /*  
+    // doesn't work, don't know why
+    $('.nav-tabs').tab();
+    $('.nav-tabs a:first')[0].click()  
+    */
 </script>
 <script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script>
 {{- end -}}

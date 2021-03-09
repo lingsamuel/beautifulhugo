@@ -1,5 +1,6 @@
 
 {{ $hideMeta := .Params.hideMeta }}
+{{ $url_prefix := $.Site.LanguagePrefix | absURL }}
 {{ if (not $hideMeta) }}
 <!-- <div class="post-meta row"> -->
 <div class="post-meta" style="display:flex; justify-content: space-between;">
@@ -65,10 +66,10 @@
 {{ if .Params.aliases }}
 <div style="display: inline-flex; font-style:normal;">
 <!-- <div class="col-lg-2"> -->
-  {{ range .Params.aliases }}
+  {{ with index .Params.aliases 0 }}
   <!-- <a href="{{ $.Site.LanguagePrefix | relURL }}{{ . | urlize }}/">Eternal Link</a>&nbsp; -->
   <span></span>&nbsp;
-  <a style="text-align:right" href="{{ . | urlize }}/" onclick='
+  <a style="text-align:right" href="{{ . | absURL }}/" onclick='
   event.preventDefault();
   return function f(elem){
     navigator.clipboard.writeText(elem.href);
@@ -85,7 +86,6 @@
 {{ end }}
 
 {{ if .Params.categories }}
-{{ $url_prefix := $.Site.LanguagePrefix | absURL }}
 {{ if not (eq $.Site.LanguagePrefix "") }}
   {{ $url_prefix = print $url_prefix "/" }}
 {{ end }}
