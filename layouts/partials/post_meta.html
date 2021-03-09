@@ -1,8 +1,12 @@
 
 {{ $hideMeta := .Params.hideMeta }}
 {{ if (not $hideMeta) }}
+<!-- <div class="post-meta row"> -->
 <div class="post-meta" style="display:flex; justify-content: space-between;">
+<!-- <div class="post-meta"> -->
 <span style="display: inline-flex;">
+  <!-- <span class="col-lg-8"> -->
+  <!-- <span class="col-lg-8 col-lg-offset-1"> -->
   {{ $showModify := (in .Site.Params.showLastModifyType .Type) }}
 
   {{ if .Params.Date }}
@@ -60,6 +64,7 @@
 
 {{ if .Params.aliases }}
 <div style="display: inline-flex; font-style:normal;">
+<!-- <div class="col-lg-2"> -->
   {{ range .Params.aliases }}
   <!-- <a href="{{ $.Site.LanguagePrefix | relURL }}{{ . | urlize }}/">Eternal Link</a>&nbsp; -->
   <span></span>&nbsp;
