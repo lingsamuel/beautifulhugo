@@ -73,14 +73,17 @@
 {{/*  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>  */}}
 
 <script src="{{ "js/main.js" | absURL }}"></script>
+<script data-stage="prerender">
+  $(document).ready(updateHeaderLang);
+</script>
 {{- if .Site.Params.staticman }}
 <script src="{{ "js/staticman.js" | absURL }}"></script>
 {{- end }}
 <link href="{{"css/mermaid.css" | absURL}}" type="text/css" rel="stylesheet"/>
-<script src="{{"js/mermaid.min.js" | absURL}}"></script>
+<script data-stage="prerender" src="{{"js/mermaid.min.js" | absURL}}"></script>
 {{- if  .Site.Params.useHLJS }}
-<script src="{{ "js/highlight.min.js" | absURL }}"></script>
-<script> 
+<script data-stage="prerender" src="{{ "js/highlight.min.js" | absURL }}"></script>
+<script data-stage="prerender"> 
   hljs.initHighlightingOnLoad(); 
 
   const mermaidKeywords = [
@@ -133,15 +136,37 @@
     //var graph = mermaid.mermaidAPI.render('graphDiv', graphDefinition, insertSvg);
   });
 </script>
-<script>
+<script data-stage="prerender">
     // Don't render immediately
     mermaid.initialize({startOnLoad:false});
     mermaid.mermaidAPI.initialize();
 
+    function cyrb53(str, seed = 0) {
+      let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+      for (let i = 0, ch; i < str.length; i++) {
+          ch = str.charCodeAt(i);
+          h1 = Math.imul(h1 ^ ch, 2654435761);
+          h2 = Math.imul(h2 ^ ch, 1597334677);
+      }
+      h1 = Math.imul(h1 ^ (h1>>>16), 2246822507) ^ Math.imul(h2 ^ (h2>>>13), 3266489909);
+      h2 = Math.imul(h2 ^ (h2>>>16), 2246822507) ^ Math.imul(h1 ^ (h1>>>13), 3266489909);
+      return 4294967296 * (2097151 & h2) + (h1>>>0);
+    };
+
+    let existed = {};
+    function calculateHash(str){
+      let id = cyrb53(str);
+      if (typeof existed[id] === "number") {
+        id = existed[id] + 1;
+      }
+      existed[id] = id;
+      return id;
+    }
+
     document.querySelectorAll('.mermaid').forEach(function(el) {
       let html = el.textContent;
       console.log("Rendering ",html)
-      let id = 'graph-' + Math.floor(Math.random() * Math.floor(100000));
+      let id = "graph-" + calculateHash(html);
 
       mermaid.mermaidAPI.render(id, html, content => {
           el.innerHTML = content;
@@ -154,9 +179,9 @@
     $('.nav-tabs a:first')[0].click()  
     */
 </script>
-<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script>
+<script data-stage="prerender"> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script>
 {{- end -}}
-<script> renderMathInElement(document.body); </script>
+<script data-stage="prerender"> renderMathInElement(document.body); </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
 <script src="{{ "js/load-photoswipe.js" | absURL }}"></script>
