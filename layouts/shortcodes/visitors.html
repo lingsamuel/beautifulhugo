@@ -1,0 +1,3 @@
+{{ if and (not (in .Site.BaseURL "localhost")) ($.Get 0) }}
+<img src="https://visitor-badge.glitch.me/badge?page_id={{ $.Get 0 }}" alt="Visitors {{ $.Get 0 }}">
+{{ end }}
