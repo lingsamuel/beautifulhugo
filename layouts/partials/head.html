@@ -108,4 +108,7 @@
   <link rel="stylesheet" href="{{ "css/main.css" | absURL }}" />
 
 {{- partial "head_custom.html" . }}
+
+{{ if (not (in .Site.BaseURL "localhost")) }}
 {{ template "_internal/google_analytics_async.html" . }}
+{{ end }}
