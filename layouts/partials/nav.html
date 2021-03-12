@@ -7,8 +7,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{{ "" | absLangURL }}">{{ .Site.Title }}</a>
-    </div>
+      <div style="display: flex;">
+        {{/*  注释掉的方式在窄屏幕时由于上级 container-fluid 会导致 icon 没有 margin-left  */}}
+        {{/*  <img src="/img/favicon.ico" style="height: 1em; display: flex; margin-left:0; margin-right: 0;">
+        <a class="navbar-brand" style="margin-left: 0;" href="{{ "" | absLangURL }}">{{ .Site.Title }}</a>  */}}
+        <a class="navbar-brand" style="display: flex;" href="{{ "" | absLangURL }}">
+          {{- with .Site.Params.favicon }}
+          <img src="{{ . | absURL }}" style="margin-right: 5px; height: 1em;">
+          {{- end -}}
+          {{ .Site.Title }}</a>
+      </div>
+      </div>
 
     <div class="collapse navbar-collapse" id="main-navbar">
       <ul class="nav navbar-nav navbar-right">
