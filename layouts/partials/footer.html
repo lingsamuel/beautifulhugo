@@ -82,10 +82,15 @@
 <link href="{{"css/mermaid.css" | absURL}}" type="text/css" rel="stylesheet"/>
 <script data-stage="prerender" src="{{"js/mermaid.min.js" | absURL}}"></script>
 {{- if  .Site.Params.useHLJS }}
-<script data-stage="prerender" src="{{ "js/highlight.min.js" | absURL }}"></script>
+<script data-stage="prerender" src="{{ "js/highlight.pack.js" | absURL }}"></script>
 <script data-stage="prerender"> 
-  hljs.initHighlightingOnLoad(); 
-
+  hljs.initHighlightingOnLoad();
+</script>
+<script data-stage="prerender"> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script>
+{{- else -}}
+<script data-stage="prerender"> $(document).ready(function() {$("pre.chroma").css("padding-top","0");}); </script>
+{{- end -}}
+<script data-stage="prerender"> 
   const mermaidKeywords = [
     "graph TD",
     "graph TB",
@@ -179,8 +184,6 @@
     $('.nav-tabs a:first')[0].click()  
     */
 </script>
-<script data-stage="prerender"> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script>
-{{- end -}}
 <script data-stage="prerender"> renderMathInElement(document.body,
   {
     delimiters: [
@@ -190,9 +193,9 @@
       //{left: "\\(", right: "\\)", display: false}
     ]
   }); </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
-<script src="{{ "js/load-photoswipe.js" | absURL }}"></script>
+<script data-dep="photoswipe" src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script data-dep="photoswipe" src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+<script data-dep="photoswipe" src="{{ "js/load-photoswipe.js" | absURL }}"></script>
 <!-- Google Custom Search Engine -->
 {{ if .Site.Params.gcse }}
 <script>
