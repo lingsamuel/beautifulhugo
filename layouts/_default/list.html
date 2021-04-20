@@ -130,14 +130,14 @@
                   <!-- 仅省略右边：减去尾页、省略、下一页== 3 页，小于 Count - 3 的都可以显示 -->
                   <!-- 注意此处须排除最靠近省略号的页数（此处为 5），否则若当前页==最靠近省略号的页数，那么会额外展开一页（第六页） -->
                   <!-- 1 2 3 4 5 ... 10 -->
-                  {{ $lesserThan := sub $paginatorCount 3 }}
+                  {{ $lessThan := sub $paginatorCount 3 }}
                   <!-- 仅省略左边：减去首页、省略、上一页== 3 页，大于 Total - (Count - 4) 的都可以显示 -->
                   <!-- 因为起始id=1，额外减一 -->
-                  {{ $largerThan := sub .TotalPages (sub $paginatorCount 3) }}
+                  {{ $largeThan := sub .TotalPages (sub $paginatorCount 3) }}
 
                   <!-- 由于上面排除了最靠近省略号的页数，此处需要加/减回来（） -->
-                  {{ $showNumber := or $showNumber (and (le .PageNumber (add $lesserThan 1)) (le $pag.PageNumber $lesserThan)) }}
-                  {{ $showNumber := or $showNumber (and (gt .PageNumber (sub $largerThan 1)) (gt $pag.PageNumber $largerThan)) }}
+                  {{ $showNumber := or $showNumber (and (le .PageNumber (add $lessThan 1)) (le $pag.PageNumber $lessThan)) }}
+                  {{ $showNumber := or $showNumber (and (gt .PageNumber (sub $largeThan 1)) (gt $pag.PageNumber $largeThan)) }}
                   
                   {{ if $showNumber }}
                     {{ $.Scratch.Set "__paginator.ellipsed" false }}
